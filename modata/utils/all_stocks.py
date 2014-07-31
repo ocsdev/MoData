@@ -1,16 +1,20 @@
 # -*- coding: UTF-8 -*-
 
-import pandas as pd
 '''
 按条件获取股票基本信息,默认为全部
 返回DataFrame
 '''
-def get_stocks(priceLt=None, priceGt=None, 
-                        outLt=None,outGt=None, 
+
+from modata.utils import constants
+import pandas as pd
+
+
+def get_stocks(priceLt=None, priceGt=None,
+                        outLt=None, outGt=None,
                         peLt=None, peGt=None,
                         gjjLt=None, gjjGt=None,
-                        epsLt=None,epsGt=None, 
-                        industry=None,notST=False):
+                        epsLt=None, epsGt=None,
+                        industry=None, notST=False):
     '''
     priceLt:当前价小于等于
     priceGt:当前价大于等于
@@ -20,7 +24,7 @@ def get_stocks(priceLt=None, priceGt=None,
     Index(['code', 'name', 'price', 'pe', 'out', 'industry', 'org', 'eps', 'gjj', 'rjcg', 'gdrs', 'mgjzc', 'sjl', 'lrtb', 'mgwfp', 'srtb', 'date','yes'], dtype='object')
     '''
     
-    path = '%s/data/20140722_all.csv' % script_path()
+    path = '%s/data/20140722_all.csv' % constants.data_path()
     df = pd.read_csv(path, dtype={'code':object, 'eps':float}, encoding='GBK')
     df = df.set_index(['code'])
     df['pe'] = df['pe' == '--'] = '0'
@@ -29,27 +33,27 @@ def get_stocks(priceLt=None, priceGt=None,
     df = df.dropna(how='all')
     
     if priceLt is not None:
-        df = df.ix[df.price<=priceLt]
+        df = df.ix[df.price <= priceLt]
     if priceGt is not None:
-        df = df.ix[df.price>=priceGt]
+        df = df.ix[df.price >= priceGt]
     if outLt is not None:
-        df = df.ix[df.out<=outLt]
+        df = df.ix[df.out <= outLt]
     if outGt is not None:
-        df = df.ix[df.out>=outGt]
+        df = df.ix[df.out >= outGt]
     if peLt is not None:
-        df = df.ix[df.pe<=peLt]
+        df = df.ix[df.pe <= peLt]
     if peGt is not None:
-        df = df.ix[df.pe>=peGt]
+        df = df.ix[df.pe >= peGt]
     if gjjLt is not None:
-        df = df.ix[df.gjj<=gjjLt]
+        df = df.ix[df.gjj <= gjjLt]
     if gjjGt is not None:
-        df = df.ix[df.gjj>=gjjGt]
+        df = df.ix[df.gjj >= gjjGt]
     if epsLt is not None:
-        df = df.ix[df.eps<=epsLt]
+        df = df.ix[df.eps <= epsLt]
     if epsGt is not None:
-        df = df.ix[df.eps>=epsGt]  
+        df = df.ix[df.eps >= epsGt]  
     if industry is not None:
-        df = df.ix[df.industry==industry]
+        df = df.ix[df.industry == industry]
     if notST is True:
         df = df.ix[df.name.str.contains('ST') == False]
 
