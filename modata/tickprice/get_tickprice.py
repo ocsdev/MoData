@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+'''
+Created on 2012/08/11
+@author: Jimmy Liu
+QQ:52799046
+'''
 import pandas as pd
 import datetime
 from modata.utils import constants

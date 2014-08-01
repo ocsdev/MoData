@@ -1,4 +1,9 @@
 # -*- coding: UTF-8 -*-
+'''
+Created on 2012/07/30
+@author: Jimmy Liu
+QQ:52799046
+'''
 import glob
 import json
 import socket
