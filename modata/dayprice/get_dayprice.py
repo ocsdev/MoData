@@ -82,10 +82,7 @@ def to_a_big_file_hdf():
     for file in files[1:]:
         df = pd.read_csv(file)
         df['code'] = file[-10:-4]
-        if i==0:
-            data = df
-        else:
-            data = data.append(df)
+        data = df if i==0 else data.append(df)
         i += 1
     data.to_hdf('%sall_stocks_price.h5'%PATH, 'price',format='t',complevel=9, complib='bzip2',append=True)    
 
