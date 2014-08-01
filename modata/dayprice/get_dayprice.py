@@ -3,11 +3,11 @@ import glob
 import json
 import socket
 import requests
-from modata.utils import all_stocks
-from modata.utils import constants
+from modata.utils import all_stocks,constants
 import pandas as pd
+import os
 
-PATH = '%s/data/'%constants.data_path()
+PATH = constants.PATH
 
 '''
 获取所有每日交易数据
@@ -31,28 +31,37 @@ def from_ifeng(day=None):
 保存DataFrame数据为csv格式
 '''
 def get_data(url,code=None,day=None):
+    print url
     resp = requests.get(url)
     text = resp.text
     js = json.loads(text)
     df = pd.DataFrame(js['record'],columns=constants.DAY_PRICE_COLUMNS)
-    df = df.applymap(lambda x: x.replace(u',', u'')) #删除千位分隔符,
+    df = df.applymap(lambda x: x.replace(u',', u''))#删除千位分隔符,
     df = df.drop('price_change',axis=1)
     df = df.set_index(['date'])
     
-    if day is None:
-        df.to_csv('%s/day_price/%s.csv'%(PATH,code)) #生产新的文件
+    if day is None or os.path.exists('%s\\day_price\\%s.csv'%(PATH,code)) is False:
+        df.to_csv('%s\\day_price\\%s.csv'%(PATH,code))
     else:
         df = df.ix[df.index>=day]
-        df.to_csv('%s/day_price/%s.csv'%(PATH,code),mode='a',header=False) #追加行
+        df.to_csv('%s\\day_price\\%s.csv'%(PATH,code),mode='a',header=False)
+    
+    print df
  
 '''
 将所有股票数据合成一个大文件，csv格式
 '''   
 def to_a_big_file():
     files = glob.glob('%sday_price/*.csv'%PATH)
-    for file in files:
+    i = 0
+    data = pd.DataFrame()
+    df = pd.read_csv(files[0])
+    df['code'] = files[0][-10:-4]
+    df = df.set_index(['code','date'])
+    df.to_csv('%sall_stocks_price.csv'%PATH)   
+    for file in files[1:]:
         print file[-10:-4]
-        df = pd.read_csv(file,names=constants.DAY_PRICE_COLUMNS)
+        df = pd.read_csv(file)
         df['code'] = file[-10:-4]
         df = df.set_index(['code','date'])
         df.to_csv('%sall_stocks_price.csv'%PATH,header=False,mode='a')
@@ -92,3 +101,4 @@ def write_added(text):
 
 if __name__ == '__main__':
     to_a_big_file()
+#     from_ifeng('2014-01-01')
