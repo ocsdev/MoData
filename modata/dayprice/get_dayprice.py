@@ -103,4 +103,4 @@ def write_added(text):
 
 if __name__ == '__main__':
     to_a_big_file()
-#     from_ifeng('2014-01-01')
+#     from_ifeng(day='2014-01-01')

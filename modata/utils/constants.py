@@ -16,6 +16,8 @@ def data_path():
 PATH = '%s/data/'%data_path()
 DAY_PRICE_URL = 'http://api.finance.ifeng.com/index.php/akdaily/?code=%s&type=last'
 TICK_PRICE_URL = 'http://market.finance.sina.com.cn/downxls.php?date=%s&symbol=%s'
+#日期 ，开盘价， 最高价， 收盘价， 最低价， 成交量， 价格变动 ，涨跌幅，5日均价，10日均价，20日均价，5日均量，10日均量，20日均量，换手率
 DAY_PRICE_COLUMNS = ['date','open','high','close','low','vol','price_change','p_change','ma5','ma10','ma20','v_ma5','v_ma10','v_ma20','turnover']
 TICK_COLUMNS = ['time','price','change','vol','cash','type']
-TICK_STAT_COLUMNS = ['date','count','b_count','s_count','bb_count','bs_count','var_num']
+#日期，总笔数，买单总数，卖单总数 大买单总数，大卖单数，小单金额差，大单金额差 ，成交金额方差/成交金额
+TICK_STAT_COLUMNS = ['date','count','b_count','s_count','bb_count','bs_count','s_cash_df','b_cash_df','var_num']
